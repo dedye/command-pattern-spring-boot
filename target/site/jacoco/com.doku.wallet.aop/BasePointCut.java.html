@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BasePointCut.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">wal-mobile-api</a> &gt; <a href="index.source.html" class="el_package">com.doku.wallet.aop</a> &gt; <span class="el_source">BasePointCut.java</span></div><h1>BasePointCut.java</h1><pre class="source lang-java linenums">package com.doku.wallet.aop;
+import org.aspectj.lang.annotation.Pointcut;
+
+<span class="nc" id="L4">public class BasePointCut {</span>
+
+    @Pointcut(&quot;within(@org.springframework.web.bind.annotation.RestController *)&quot;)
+    public void restController() {
+        // Do nothing because of X and Y.
+<span class="nc" id="L9">    }</span>
+
+    @Pointcut(&quot;within(@org.springframework.web.bind.annotation.RestControllerAdvice *)&quot;)
+    public void restControllerAdvice() {
+        // Do nothing because of X and Y.
+<span class="nc" id="L14">    }</span>
+
+    @Pointcut(&quot;@annotationcom.doku.wallet.annotation.Role)&quot;)
+    public void role() {
+        // Do nothing because of X and Y.
+<span class="nc" id="L19">    }</span>
+
+    @Pointcut(&quot;execution(* *.*(..))&quot;)
+    public void allMethod() {
+        // Do nothing because of X and Y.
+<span class="nc" id="L24">    }</span>
+
+    @Pointcut(&quot;execution(public * *(..))&quot;)
+    public void publicOperation() {
+        // Do nothing because of X and Y.
+<span class="nc" id="L29">    }</span>
+
+    @Pointcut(&quot;within(com.doku.wallet..*)&quot;)
+    public void logAnyFunctionWithinResource() {
+        // Do nothing because of X and Y.
+<span class="nc" id="L34">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>BaseResponse.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">wal-mobile-api</a> &gt; <a href="index.source.html" class="el_package">com.doku.wallet.dto.response</a> &gt; <span class="el_source">BaseResponse.java</span></div><h1>BaseResponse.java</h1><pre class="source lang-java linenums">package com.doku.wallet.dto.response;
+
+import lombok.Builder;
+import lombok.Data;
+import org.springframework.http.HttpStatus;
+import org.springframework.lang.Nullable;
+import org.springframework.util.Assert;
+import java.util.*;
+
+<span class="nc bnc" id="L10" title="All 30 branches missed.">@Data</span>
+<span class="nc" id="L11">@Builder</span>
+public class BaseResponse&lt;T&gt; {
+
+<span class="nc" id="L14">    private Integer code;</span>
+
+<span class="nc" id="L16">    private String status;</span>
+
+<span class="nc" id="L18">    private T data;</span>
+
+    public static &lt;T&gt; BaseResponse&lt;T&gt; ok(T data) {
+<span class="nc" id="L21">        Assert.notNull(data, &quot;Data must not null&quot;);</span>
+<span class="nc" id="L22">        return BaseResponse.status(HttpStatus.OK, data);</span>
+    }
+
+    public static &lt;T&gt; BaseResponse&lt;T&gt; okOrNotFound(@Nullable T data) {
+<span class="nc bnc" id="L26" title="All 2 branches missed.">        if (Objects.isNull(data)) {</span>
+<span class="nc" id="L27">            return BaseResponse.status(HttpStatus.NOT_FOUND, null);</span>
+        } else {
+<span class="nc" id="L29">            return BaseResponse.ok(data);</span>
+        }
+    }
+
+    public static &lt;T&gt; BaseResponse&lt;T&gt; status(HttpStatus httpStatus, @Nullable T data) {
+<span class="nc" id="L34">        return BaseResponse.&lt;T&gt;builder()</span>
+<span class="nc" id="L35">                .code(httpStatus.value())</span>
+<span class="nc" id="L36">                .status(httpStatus.getReasonPhrase())</span>
+<span class="nc" id="L37">                .data(data)</span>
+<span class="nc" id="L38">                .build();</span>
+    }
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

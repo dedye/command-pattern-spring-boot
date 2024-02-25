@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LoggingHandler.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">wal-mobile-api</a> &gt; <a href="index.source.html" class="el_package">com.doku.wallet.aop</a> &gt; <span class="el_source">LoggingHandler.java</span></div><h1>LoggingHandler.java</h1><pre class="source lang-java linenums">package com.doku.wallet.aop;
+
+import com.doku.wallet.utils.JsonUtils;
+import lombok.extern.slf4j.Slf4j;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.aspectj.lang.annotation.AfterReturning;
+import org.aspectj.lang.annotation.Around;
+import org.aspectj.lang.annotation.Aspect;
+import org.aspectj.lang.annotation.Before;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Component;
+import org.springframework.util.StopWatch;
+import java.util.Optional;
+
+<span class="nc" id="L17">@Slf4j</span>
+@Aspect
+@Component
+<span class="nc" id="L20">public class LoggingHandler extends BasePointCut {</span>
+
+    @Autowired
+    private JsonUtils jsonUtils;
+
+    @Before(&quot;restController() &amp;&amp; allMethod() &amp;&amp; args(..)&quot;)
+    public void logBefore(JoinPoint joinPoint) {
+<span class="nc" id="L27">        Object request = Optional.ofNullable(joinPoint)</span>
+<span class="nc bnc" id="L28" title="All 2 branches missed.">                .filter(j -&gt; j.getArgs().length &gt; 0)</span>
+<span class="nc" id="L29">                .map(l -&gt; l.getArgs()[0])</span>
+<span class="nc" id="L30">                .orElse(null);</span>
+<span class="nc" id="L31">        log.info(&quot;REQUEST FORM: {}&quot;,jsonUtils.toJsonString(request));</span>
+<span class="nc" id="L32">    }</span>
+
+    @AfterReturning(pointcut = &quot;restController() &amp;&amp; allMethod()&quot;, returning = &quot;response&quot;)
+    public void logAfter(Object response) {
+<span class="nc bnc" id="L36" title="All 2 branches missed.">        if(response instanceof ResponseEntity){</span>
+<span class="nc" id="L37">            ResponseEntity&lt;?&gt; responseEntity = (ResponseEntity)response;</span>
+<span class="nc" id="L38">            log.info(&quot;RESPONSE REST: {}&quot;,jsonUtils.toJsonString(responseEntity.getBody()));</span>
+        }
+<span class="nc" id="L40">    }</span>
+
+    @AfterReturning(pointcut = &quot;restControllerAdvice() &amp;&amp; allMethod()&quot;, returning = &quot;response&quot;)
+    public void logAfterError(Object response) {
+<span class="nc bnc" id="L44" title="All 2 branches missed.">        if(response instanceof ResponseEntity){</span>
+<span class="nc" id="L45">            ResponseEntity&lt;?&gt; responseEntity = (ResponseEntity)response;</span>
+<span class="nc" id="L46">            log.warn(&quot;RESPONSE ERROR: {}&quot;,jsonUtils.toJsonString(responseEntity.getBody()));</span>
+        }
+<span class="nc" id="L48">    }</span>
+
+    @Around(&quot;restController() &amp;&amp; allMethod()&quot;)
+    public Object logAround(ProceedingJoinPoint proceedingJoinPoint) throws Throwable {
+<span class="nc" id="L52">        StopWatch stopWatch = new StopWatch();</span>
+<span class="nc" id="L53">        stopWatch.start();</span>
+<span class="nc" id="L54">        Object result = proceedingJoinPoint.proceed();</span>
+<span class="nc" id="L55">        stopWatch.stop();</span>
+<span class="nc" id="L56">        log.info(&quot;Execution time with class : {}, method : {}, and time : {} ms&quot;,</span>
+<span class="nc" id="L57">                proceedingJoinPoint.getSignature().getDeclaringTypeName(),</span>
+<span class="nc" id="L58">                proceedingJoinPoint.getSignature().getName(),</span>
+<span class="nc" id="L59">                stopWatch.getTotalTimeMillis());</span>
+
+<span class="nc" id="L61">        return result;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>
